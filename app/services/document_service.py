@@ -93,6 +93,9 @@ def keyword_search(keyword:str):
 
 def get_document_chunks(document_id: int):
      return get_chunks_by_document(document_id)
-     
+
+
+if __name__ == "__main__":
+     parse_and_chunk(9)
 
 

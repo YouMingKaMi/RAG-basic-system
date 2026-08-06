@@ -1,8 +1,9 @@
 import hashlib
+import ollama
 
-def embedding_process(content: str)->list[float]:
+def mock_embedding_test(content: str)->list[float]:
     if not content.strip():
-        raise ValueError("Content can not be empty!!")
+        raise ValueError("Content cannot be empty!!")
     result = hashlib.sha256(content.encode("utf-8")).hexdigest()
     corr_hex = []
     corr = []
@@ -20,3 +21,13 @@ def embedding_process(content: str)->list[float]:
             total_value += value*16**(3-a)
         corr.append(float(total_value))
     return corr
+
+def ollama_embedding_process(content: str)->list[float]:
+    if not content.strip():
+        raise ValueError("The content should not empty")
+    ollama_response = ollama.embed(
+        model="qwen3-embedding:0.6b",
+        input=content
+    )
+    vector = ollama_response.embeddings[0]
+    return vector

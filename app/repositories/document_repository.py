@@ -93,3 +93,4 @@ def get_chunks_by_document(document_id: int):
     conn.close()
     return result
 
+
