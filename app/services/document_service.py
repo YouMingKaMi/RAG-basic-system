@@ -78,7 +78,7 @@ def parse_and_chunk(document_id: int):
         if result is None:
              return "Unable to find the document_id!!!"
         text = text_parser(result["stored_path"])
-        chunks = chunk_text(text, chunk_size=50, overlap=10)
+        chunks = chunk_text(text, chunk_size=500, overlap=50)
         delete_chunks(document_id)
         create_chunks(document_id, chunks)
     except Exception as e: 
@@ -95,7 +95,6 @@ def get_document_chunks(document_id: int):
      return get_chunks_by_document(document_id)
 
 
-if __name__ == "__main__":
-     parse_and_chunk(9)
+
 
 

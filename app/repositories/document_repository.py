@@ -93,4 +93,15 @@ def get_chunks_by_document(document_id: int):
     conn.close()
     return result
 
+def get_chunk_content(document_id: int, chunk_id: int):
+    conn = sqlite3.connect("storage/documents.db")
+    cur = conn.cursor()
+    cur.execute("SELECT content FROM chunks WHERE document_id = ? AND chunk_id = ? ",(document_id, chunk_id))
+    result = cur.fetchone()
+    if result is None:
+        conn.close()
+        return None
+    (content,) = result
+    conn.close()
+    return content
 

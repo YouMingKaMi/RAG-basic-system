@@ -22,7 +22,8 @@ def index_by_id(document_id: int):
         update_document_status(document_id, "index_failed")
 
 if __name__ == "__main__":
-        index_by_id(7)
+        for a in range(9,17):
+            index_by_id(a)
       
 
 
