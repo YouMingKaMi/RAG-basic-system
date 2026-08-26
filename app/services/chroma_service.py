@@ -26,7 +26,6 @@ def upsert_document_vectors(document_id:int, ids:list, embeddings:list, metadata
                     "document_id": document_id
                 }
             )
-        print(e)
         return False
 
 def search_vector(question_embedding: list[float], collection_name: str = "personal_documents", top_k: int = 3):

@@ -1,6 +1,10 @@
 import sqlite3
 from datetime import datetime
 
+def get_connection():
+    conn = sqlite3.connect("storage/documents.db")
+    return conn
+
 def create_document(original_filename, stored_filename, stored_path, file_size, status):
     conn = sqlite3.connect("storage/documents.db")
     cur = conn.cursor()
@@ -41,8 +45,7 @@ def search_one_document(document_id: int):
     return result
 
 
-def create_chunks(document_id: int, chunks: list[str]):
-    conn = sqlite3.connect("storage/documents.db")
+def create_chunks(conn, document_id: int, chunks: list[str]):
     cur = conn.cursor()
 
     for chunk_id, chunk in enumerate(chunks, start=1):
@@ -51,27 +54,16 @@ def create_chunks(document_id: int, chunks: list[str]):
                     VALUES(?,?,?,?)
                     """,(document_id, chunk_id, chunk, datetime.now().isoformat()))
 
-    conn.commit()    
-    conn.close()
-
-def delete_chunks(document_id: int):
-    conn = sqlite3.connect("storage/documents.db")
+def delete_chunks(conn, document_id: int):
     cur = conn.cursor()
     cur.execute("DELETE FROM chunks WHERE document_id = ?",(document_id,))
 
-    conn.commit()
-    conn.close()
-
-def update_document_status(document_id: int, status: str):
-    conn = sqlite3.connect("storage/documents.db")
+def update_document_status(conn, document_id: int, status: str):
     cur = conn.cursor()
 
     cur.execute("""
             UPDATE documents SET status = ? WHERE id = ?
                 """,(status, document_id))
-        
-    conn.commit()
-    conn.close()
 
 def search_chunks_by_keyword(keyword:str):
     conn = sqlite3.connect("storage/documents.db")
