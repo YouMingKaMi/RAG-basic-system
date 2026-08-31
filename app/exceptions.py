@@ -4,11 +4,15 @@ class DocumentNotFoundError(Exception):
 class InvalidUploadError(Exception):
     pass
 
-class UploadProcessError(Exception):
+class DocumentProcessError(Exception):
     pass
 
-class ChunkProcessError(Exception):
+class UploadProcessError(DocumentProcessError):
     pass
 
-class IndexProcessError(Exception):
+class ChunkProcessError(DocumentProcessError):
     pass
+
+class IndexProcessError(DocumentProcessError):
+    pass
+

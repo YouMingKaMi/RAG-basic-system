@@ -10,7 +10,10 @@ def build_rag_prompt(question:str, contexts: list)-> str:
     return prompt
 
 def rag_service(question: str):
-    contexts = retrieve(question,collection_name="personal_documents")##记住未来去掉
+    contexts = retrieve(question,collection_name="personal_documents")
+    if not contexts:
+        answer ="抱歉，该问题本文档暂无记载"
+        return answer, contexts
     prompt = build_rag_prompt(question, contexts)
     answer = ollama_chat_process(prompt)
-    return answer
+    return answer,contexts

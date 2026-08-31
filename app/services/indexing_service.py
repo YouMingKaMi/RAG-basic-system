@@ -11,7 +11,6 @@ def index_by_id(document_id: int):
             raise ValueError()
         update_document_status(conn, document_id, "indexing")
         conn.commit()
-
         embeddings = [ollama_embedding_process(chunk["content"]) for chunk in chunks]
         chunk_ids = [chunk["chunk_id"] for chunk in chunks]
         full_ids = []

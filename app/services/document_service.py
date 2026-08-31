@@ -71,19 +71,23 @@ async def upload_file(file: UploadFile) -> int:
           
 
 def list_documents_service():
-     return search_all_document()
+     documents = search_all_document()
+     return {
+          "documents": documents,
+          "count": len(documents)
+     }
 
 def get_doc_service(document_id: int):
-     return search_one_document(document_id)
-
+     content = search_one_document(document_id)
+     return content
 def parse_and_chunk(document_id: int):
+    result = search_one_document(document_id)
+    if result is None:
+          raise DocumentNotFoundError(
+               f"This {document_id} is not available!!"
+          )
     conn = get_connection()
     try:
-        result = search_one_document(document_id)
-        if result is None:
-             raise DocumentNotFoundError(
-                  f"This {document_id} is not available!!"
-             )
         text = text_parser(result["stored_path"])
         chunks = chunk_text(text, chunk_size=500, overlap=50)
         delete_chunks(conn, document_id)
@@ -103,14 +107,21 @@ def parse_and_chunk(document_id: int):
 
 
 def keyword_search(keyword:str):
-     return search_chunks_by_keyword(keyword)
+     content = search_chunks_by_keyword(keyword)
+     return {
+          "keyword":keyword,
+          "results": content,
+          "count": len(content)
+          }
 
 def get_document_chunks(document_id: int):
-     return get_chunks_by_document(document_id)
-
-if __name__ == "__main__":
-    parse_and_chunk(3)
-
-
-
-
+     content = get_chunks_by_document(document_id)
+     if not content:
+          raise DocumentNotFoundError(
+               "Can not found the document by this id"
+          )
+     return {
+          "document_id": document_id,
+          "chunks": content,
+          "count": len(content)
+          }

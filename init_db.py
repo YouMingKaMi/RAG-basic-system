@@ -15,6 +15,15 @@ cur.execute("""
         created_at TEXT NOT NULL)
 """)
 
+cur.execute("""
+    CREATE TABLE IF NOT EXISTS chunks(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    document_id INTEGER NOT NULL,
+    chunk_id INTEGER NOT NULL,
+    content TEXT NOT NULL,
+    created_at TEXT NOT NULL)
+""")
+
 conn.commit()
 conn.close()
 

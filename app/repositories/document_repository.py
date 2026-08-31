@@ -27,10 +27,10 @@ def search_all_document():
     cur = conn.cursor()
     cur.execute("SELECT * FROM documents")
 
-    result = cur.fetchall()
+    rows = cur.fetchall()
 
     conn.close()
-    return result
+    return [dict(row) for row in rows]
 
 def search_one_document(document_id: int):
     conn = sqlite3.connect("storage/documents.db")
@@ -39,10 +39,11 @@ def search_one_document(document_id: int):
     cur = conn.cursor()
     cur.execute("SELECT * FROM documents WHERE id = ?", (document_id,))
 
-    result = cur.fetchone()
-
+    row = cur.fetchone()
     conn.close()
-    return result
+    if row is None:
+        return None
+    return dict(row)
 
 
 def create_chunks(conn, document_id: int, chunks: list[str]):
@@ -66,14 +67,16 @@ def update_document_status(conn, document_id: int, status: str):
                 """,(status, document_id))
 
 def search_chunks_by_keyword(keyword:str):
+    if not keyword.strip():
+        return []
     conn = sqlite3.connect("storage/documents.db")
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
 
     cur.execute("SELECT * FROM chunks WHERE content LIKE ?",(f"%{keyword}%", ))
-    result = cur.fetchall()
+    rows = cur.fetchall()
     conn.close()
-    return result
+    return [dict(row) for row in rows]
 
 def get_chunks_by_document(document_id: int):
     conn = sqlite3.connect("storage/documents.db")
@@ -81,9 +84,9 @@ def get_chunks_by_document(document_id: int):
     cur = conn.cursor()
     
     cur.execute("SELECT * FROM chunks WHERE document_id = ? ORDER BY chunk_id",(document_id,))
-    result = cur.fetchall()
+    rows = cur.fetchall()
     conn.close()
-    return result
+    return [dict(row) for row in rows]
 
 def get_chunk_content(document_id: int, chunk_id: int):
     conn = sqlite3.connect("storage/documents.db")
@@ -97,3 +100,5 @@ def get_chunk_content(document_id: int, chunk_id: int):
     conn.close()
     return content
 
+if __name__ == "__main__":
+    create_document("hhh","dhi.db","what",1,"h")
