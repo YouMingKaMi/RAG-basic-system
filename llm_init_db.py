@@ -1,6 +1,6 @@
 import sqlite3
 
-conn = sqlite3.connect("storage/llm_history.db")
+conn = sqlite3.connect("storage/documents.db")
 
 cur = conn.cursor()
 
@@ -14,7 +14,6 @@ cur.execute("""
     CREATE TABLE IF NOT EXISTS message(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         session_id INTEGER NOT NULL,
-        message_id INTEGER NOT NULL,
         role TEXT NOT NULL,
         content TEXT NOT NULL,
         created_at TEXT NOT NULL

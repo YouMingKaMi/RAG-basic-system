@@ -1,12 +1,15 @@
 import sqlite3
 from datetime import datetime
 
+
+db_loc = "storage/documents.db"
+
 def get_connection():
-    conn = sqlite3.connect("storage/documents.db")
+    conn = sqlite3.connect(db_loc)
     return conn
 
 def create_document(original_filename, stored_filename, stored_path, file_size, status):
-    conn = sqlite3.connect("storage/documents.db")
+    conn = sqlite3.connect(db_loc)
     cur = conn.cursor()
     
     cur.execute("""
@@ -21,7 +24,7 @@ def create_document(original_filename, stored_filename, stored_path, file_size, 
     return document_id
 
 def search_all_document():
-    conn = sqlite3.connect("storage/documents.db")
+    conn = sqlite3.connect(db_loc)
     conn.row_factory = sqlite3.Row
 
     cur = conn.cursor()
@@ -33,7 +36,7 @@ def search_all_document():
     return [dict(row) for row in rows]
 
 def search_one_document(document_id: int):
-    conn = sqlite3.connect("storage/documents.db")
+    conn = sqlite3.connect(db_loc)
     conn.row_factory = sqlite3.Row
 
     cur = conn.cursor()
@@ -69,7 +72,7 @@ def update_document_status(conn, document_id: int, status: str):
 def search_chunks_by_keyword(keyword:str):
     if not keyword.strip():
         return []
-    conn = sqlite3.connect("storage/documents.db")
+    conn = sqlite3.connect(db_loc)
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
 
@@ -79,7 +82,7 @@ def search_chunks_by_keyword(keyword:str):
     return [dict(row) for row in rows]
 
 def get_chunks_by_document(document_id: int):
-    conn = sqlite3.connect("storage/documents.db")
+    conn = sqlite3.connect(db_loc)
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
     
@@ -89,7 +92,7 @@ def get_chunks_by_document(document_id: int):
     return [dict(row) for row in rows]
 
 def get_chunk_content(document_id: int, chunk_id: int):
-    conn = sqlite3.connect("storage/documents.db")
+    conn = sqlite3.connect(db_loc)
     cur = conn.cursor()
     cur.execute("SELECT content FROM chunks WHERE document_id = ? AND chunk_id = ? ",(document_id, chunk_id))
     result = cur.fetchone()
@@ -100,5 +103,47 @@ def get_chunk_content(document_id: int, chunk_id: int):
     conn.close()
     return content
 
+def get_session_content(session_id: int)->list:
+    conn = sqlite3.connect(db_loc)
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT * FROM message WHERE session_id = ? ORDER BY id
+        """,(session_id,))
+    rows = cur.fetchall()
+    conn.close()
+    message = []
+    roles = [dict(row)["role"] for row in rows]
+    contents = [dict(row)["content"] for row in rows]
+    for role, content in zip(roles, contents):
+        message.append({
+            "role": role,
+            "content":content
+        })
+    return message
+
+def add_session_content(session_id: int, question: dict, answer: dict):
+    conn = sqlite3.connect(db_loc)
+    cur = conn.cursor()
+    for dic in [question, answer] :
+        cur.execute("""
+            INSERT INTO message(session_id, role, content, created_at)
+                VALUES(?,?,?,?)
+            """,(session_id, dic["role"], dic["content"], datetime.now().isoformat() ))
+    conn.commit()
+    conn.close()
+
+def create_new_session() -> int:
+    conn = sqlite3.connect(db_loc)
+    cur = conn.cursor()
+    cur.execute("""
+        INSERT INTO sessions(created_at)
+            VALUES(?)
+        """,(datetime.now().isoformat(),))
+    session_id = cur.lastrowid
+    conn.commit()
+    conn.close()
+    return session_id
+
 if __name__ == "__main__":
-    create_document("hhh","dhi.db","what",1,"h")
+    print(get_session_content(1))

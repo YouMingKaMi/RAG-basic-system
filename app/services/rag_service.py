@@ -1,5 +1,7 @@
 from app.services.retrieval_service import retrieve
-from app.services.llm_service import ollama_chat_process
+from app.services.llm_service import ollama_temporary_chat_process, ollama_long_chat_process
+from app.repositories.document_repository import get_session_content, add_session_content, create_new_session
+
 
 
 def build_rag_prompt(question:str, contexts: list)-> str:
@@ -15,5 +17,20 @@ def rag_service(question: str):
         answer ="抱歉，该问题本文档暂无记载"
         return answer, contexts
     prompt = build_rag_prompt(question, contexts)
-    answer = ollama_chat_process(prompt)
+    answer = ollama_temporary_chat_process(prompt)
     return answer,contexts
+
+def rag_session_service(question: str, session_id: int):
+    if session_id is None:
+        session_id = create_new_session()
+    contexts = retrieve(question,collection_name="personal_documents")
+    if not contexts:
+        answer ="抱歉，该问题本文档暂无记载"
+        return answer, contexts, session_id
+    prompt = build_rag_prompt(question, contexts)
+    messages = get_session_content(session_id) 
+    response, answer_dict, question_dict= ollama_long_chat_process(messages, prompt)
+    add_session_content(session_id, question_dict, answer_dict)
+
+    return response,contexts,session_id
+ 

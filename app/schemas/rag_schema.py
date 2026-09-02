@@ -12,3 +12,9 @@ class QuoteResponse(BaseModel):
 class RagResponse(BaseModel):
     answer: str
     sources: list[QuoteResponse]
+
+class RagSessionRequest(RagRequest):
+    session_id: int | None = None
+
+class RagSessionResponse(RagResponse):
+    session_id: int
