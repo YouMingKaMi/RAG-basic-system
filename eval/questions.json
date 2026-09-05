@@ -1,0 +1,16 @@
+{
+  "questions": [
+    {"question": "迟到30分钟以内怎么处罚？", "expected": {"document_id": 1, "chunk_id": 1}, "type": "原文型"},
+    {"question": "年假有几天？", "expected": {"document_id": 1, "chunk_id": 2}, "type": "原文型"},
+    {"question": "出差结束后多久之内必须提交报销单？", "expected": {"document_id": 1, "chunk_id": 4}, "type": "原文型"},
+    {"question": "病假期间的工资怎么发放？", "expected": {"document_id": 1, "chunk_id": 2}, "type": "原文型"},
+    {"question": "出差住酒店能报销多少钱？", "expected": {"document_id": 1, "chunk_id": 3}, "type": "语义型"},
+    {"question": "家里老人去世能请假吗？", "expected": {"document_id": 1, "chunk_id": 3}, "type": "语义型"},
+    {"question": "坐高铁出差能买一等座吗？", "expected": {"document_id": 1, "chunk_id": 3}, "type": "语义型"},
+    {"question": "上班忘记打卡了怎么办？", "expected": {"document_id": 1, "chunk_id": 1}, "type": "语义型"},
+    {"question": "请客户吃饭的费用可以报销吗？", "expected": {"document_id": 1, "chunk_id": 4}, "type": "语义型"},
+    {"question": "公司团建一般去哪里？", "expected": null, "type": "无关型"},
+    {"question": "年终奖是怎么计算的？", "expected": null, "type": "无关型"},
+    {"question": "公司有五险一金吗？", "expected": null, "type": "无关型"}
+  ]
+}
