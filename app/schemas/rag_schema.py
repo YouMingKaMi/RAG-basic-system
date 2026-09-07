@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 
 class RagRequest(BaseModel):
-    question: str = Field(min_length=1)
+    question: str = Field(min_length=1,max_length=500)
 
 class QuoteResponse(BaseModel):
     content: str

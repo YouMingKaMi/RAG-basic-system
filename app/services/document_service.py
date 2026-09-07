@@ -17,7 +17,7 @@ def allowed_file(filename: str) -> bool:
 async def process_uploaded(file: UploadFile) -> tuple[bytes, str]:
     filename = file.filename
 
-    if not allowed_file(filename): 
+    if not allowed_file(filename.lower()): 
         raise InvalidUploadError(
             "Only .txt and .md files are allowed"
         )
@@ -28,6 +28,10 @@ async def process_uploaded(file: UploadFile) -> tuple[bytes, str]:
         raise InvalidUploadError(
             "File is empty"
         )
+    if len(content_bytes) > 5*1024*1024:
+         raise InvalidUploadError(
+              "File exceeds the 5MB size limit"
+         )
     
     try:
         content_text = content_bytes.decode("utf-8")
