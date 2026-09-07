@@ -62,6 +62,11 @@ def delete_chunks(conn, document_id: int):
     cur = conn.cursor()
     cur.execute("DELETE FROM chunks WHERE document_id = ?",(document_id,))
 
+def delete_documents(conn, document_id: int):
+    cur = conn.cursor()
+    cur.execute("DELETE FROM documents WHERE id = ?",(document_id,))
+
+
 def update_document_status(conn, document_id: int, status: str):
     cur = conn.cursor()
 
@@ -168,4 +173,9 @@ def update_rating(message_id: int, rating: int, rating_content: str):
     with sqlite3.connect(db_loc) as conn:
         conn.execute("UPDATE feedback SET rating = ?, rating_content = ? WHERE message_id = ?",(rating, rating_content, message_id))
 
+if __name__ == "__main__":
+    conn = sqlite3.connect(db_loc)
+    delete_documents(conn, 2)
+    conn.commit()
+    conn.close()
 
