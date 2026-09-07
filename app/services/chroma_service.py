@@ -41,3 +41,17 @@ def search_vector(question_embedding: list[float], collection_name: str = "perso
         include=["metadatas","distances"]
     )
     return result
+
+def delete(document_id: int, collection_name: str):
+    client = chromadb.PersistentClient(
+        path = "storage/chroma_experiment"
+    )
+    collection = client.get_or_create_collection(
+        name=collection_name
+    )
+    collection.delete(
+        where={
+            "document_id": document_id
+        }
+    )
+
