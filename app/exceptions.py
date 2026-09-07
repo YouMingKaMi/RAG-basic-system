@@ -1,6 +1,9 @@
 class DocumentNotFoundError(Exception):
     pass
 
+class MessageNotFoundError(Exception):
+    pass
+
 class InvalidUploadError(Exception):
     pass
 

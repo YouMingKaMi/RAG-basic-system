@@ -145,5 +145,27 @@ def create_new_session() -> int:
     conn.close()
     return session_id
 
-if __name__ == "__main__":
-    print(get_session_content(1))
+def add_rating(message_id: int, rating: int, rating_content: str):
+    with sqlite3.connect(db_loc) as conn:
+        conn.execute("""
+            INSERT INTO feedback(message_id, rating, rating_content, created_at)
+                VALUES(?,?,?,?)
+        """,(message_id, rating, rating_content, datetime.now().isoformat()))
+
+def message_exists(message_id: int):
+    with sqlite3.connect(db_loc) as conn:
+        cur = conn.execute("SELECT * FROM message WHERE id = ?",(message_id,))
+        row = cur.fetchone()
+        return row is not None
+
+def rating_exists(message_id: int):
+    with sqlite3.connect(db_loc) as conn:
+        cur =conn.execute("SELECT * FROM feedback WHERE message_id = ?",(message_id,))
+        row = cur.fetchone()
+        return row is not None
+
+def update_rating(message_id: int, rating: int, rating_content: str):
+    with sqlite3.connect(db_loc) as conn:
+        conn.execute("UPDATE feedback SET rating = ?, rating_content = ? WHERE message_id = ?",(rating, rating_content, message_id))
+
+

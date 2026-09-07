@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
-from app.exceptions import InvalidUploadError, DocumentProcessError, DocumentNotFoundError
+from app.exceptions import InvalidUploadError, DocumentProcessError, DocumentNotFoundError, MessageNotFoundError
 
 def register_exception_handlers(app: FastAPI):
     @app.exception_handler(InvalidUploadError)
@@ -30,4 +30,12 @@ def register_exception_handlers(app: FastAPI):
             }
         )
 
+    @app.exception_handler(MessageNotFoundError)
+    def message_found_error(request: Request, error: MessageNotFoundError):
+        return JSONResponse(
+            status_code=404,
+            content = {
+                "detail":str(error)
+            }
+        )
     
