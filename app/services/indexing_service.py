@@ -11,7 +11,7 @@ def index_by_id(document_id: int):
     try:
         chunks = get_chunks_by_document(document_id)
         if not chunks:
-            raise ValueError()
+            raise ValueError("No chunk has been found in this document")
         update_document_status(conn, document_id, "indexing")
         conn.commit()
         embeddings = [ollama_embedding_process(chunk["content"]) for chunk in chunks]

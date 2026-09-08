@@ -17,6 +17,6 @@ async def upload_document(file: UploadFile = File(...)):
      return get_doc_service(document_id)
 
 
-@router.get("/get_doc", response_model=DocumentResponse)
+@router.get("/get_docs/{document_id}", response_model=DocumentResponse)
 def get_doc(document_id: int):
     return get_doc_service(document_id)

@@ -22,7 +22,7 @@ def register_exception_handlers(app: FastAPI):
         )
 
     @app.exception_handler(DocumentNotFoundError)
-    def docuemnt_found_error(request: Request, error: DocumentNotFoundError):
+    def docuemnt_not_found_handler(request: Request, error: DocumentNotFoundError):
         return JSONResponse(
             status_code=404,
             content = {
@@ -31,7 +31,7 @@ def register_exception_handlers(app: FastAPI):
         )
 
     @app.exception_handler(MessageNotFoundError)
-    def message_found_error(request: Request, error: MessageNotFoundError):
+    def message_not_found_handler(request: Request, error: MessageNotFoundError):
         return JSONResponse(
             status_code=404,
             content = {
