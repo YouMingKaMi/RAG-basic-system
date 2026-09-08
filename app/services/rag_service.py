@@ -1,8 +1,9 @@
 from app.services.retrieval_service import retrieve
 from app.services.llm_service import ollama_temporary_chat_process, ollama_long_chat_process
 from app.repositories.document_repository import get_session_content, add_session_content, create_new_session
+import logging
 
-
+logger = logging.getLogger(__name__)
 
 def build_rag_prompt(question:str, contexts: list)-> str:
     context_content = []
@@ -14,6 +15,7 @@ def build_rag_prompt(question:str, contexts: list)-> str:
 def rag_service(question: str):
     contexts = retrieve(question,collection_name="personal_documents")
     if not contexts:
+        logger.warning(f"Rejected question(no context return above the threshold):{question!r}")
         answer ="抱歉，该问题本文档暂无记载"
         return answer, contexts
     prompt = build_rag_prompt(question, contexts)
@@ -26,6 +28,7 @@ def rag_session_service(question: str, session_id: int):
     contexts = retrieve(question,collection_name="personal_documents")
     if not contexts:
         answer ="抱歉，该问题本文档暂无记载"
+        logger.warning(f"Rejected question(no context return above the threshold):{question!r}, session_id={session_id}")
         return answer, contexts, session_id
     prompt = build_rag_prompt(question, contexts)
     messages = get_session_content(session_id) 

@@ -1,0 +1,22 @@
+2026-09-08 10:47:30,369 [INFO] app.services.document_service: Upload process success: document_id=3
+2026-09-08 10:47:30,372 [INFO] app.services.document_service: Chunked document 3,totoal chunks: 3
+2026-09-08 10:47:32,291 [INFO] httpx: HTTP Request: POST http://127.0.0.1:11434/api/embed "HTTP/1.1 200 OK"
+2026-09-08 10:47:32,541 [INFO] httpx: HTTP Request: POST http://127.0.0.1:11434/api/embed "HTTP/1.1 200 OK"
+2026-09-08 10:47:32,681 [INFO] httpx: HTTP Request: POST http://127.0.0.1:11434/api/embed "HTTP/1.1 200 OK"
+2026-09-08 10:47:32,870 [INFO] app.services.indexing_service: indexed document 3
+2026-09-08 10:49:31,819 [WARNING] app.services.rating_service: Negative rating on message4
+2026-09-08 10:49:32,967 [WARNING] app.services.rating_service: Negative rating on message4
+2026-09-08 10:50:36,374 [INFO] httpx: HTTP Request: POST http://127.0.0.1:11434/api/embed "HTTP/1.1 200 OK"
+2026-09-08 10:50:36,394 [INFO] app.services.retrieval_service: Retrieve:question='人生有什么意义？', hits=0
+2026-09-08 10:52:38,504 [INFO] httpx: HTTP Request: POST http://127.0.0.1:11434/api/embed "HTTP/1.1 200 OK"
+2026-09-08 10:52:38,663 [INFO] app.services.retrieval_service: Retrieve:question='我要去哪个城市？？', hits=0
+2026-09-08 10:52:38,663 [INFO] app.services.rag_service: Rejected auestion(no context return above the threshold):'我要去哪个城市？？'
+2026-09-08 10:53:53,958 [INFO] httpx: HTTP Request: POST http://127.0.0.1:11434/api/embed "HTTP/1.1 200 OK"
+2026-09-08 10:53:54,113 [INFO] app.services.retrieval_service: Retrieve:question='敢问路在何方？路在脚下。', hits=0
+2026-09-08 10:53:54,113 [WARNING] app.services.rag_service: Rejected auestion(no context return above the threshold):'敢问路在何方？路在脚下。'
+2026-09-08 10:55:40,528 [INFO] httpx: HTTP Request: POST http://127.0.0.1:11434/api/embed "HTTP/1.1 200 OK"
+2026-09-08 10:55:40,676 [INFO] app.services.retrieval_service: Retrieve:question='敢问路在何方？我不知道', hits=0
+2026-09-08 10:55:40,676 [WARNING] app.services.rag_service: Rejected question(no context return above the threshold):'敢问路在何方？我不知道', session_id=4
+2026-09-08 10:56:02,751 [INFO] httpx: HTTP Request: POST http://127.0.0.1:11434/api/embed "HTTP/1.1 200 OK"
+2026-09-08 10:56:02,767 [INFO] app.services.retrieval_service: Retrieve:question='我要写项目', hits=0
+2026-09-08 10:56:02,768 [WARNING] app.services.rag_service: Rejected question(no context return above the threshold):'我要写项目'

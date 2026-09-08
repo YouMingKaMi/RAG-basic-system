@@ -2,6 +2,9 @@ from app.repositories.document_repository import get_chunks_by_document, update_
 from app.services.embedding_service import ollama_embedding_process
 from app.services.chroma_service import upsert_document_vectors
 from app.exceptions import IndexProcessError
+import logging 
+
+logger = logging.getLogger(__name__)
 
 def index_by_id(document_id: int):
     conn = get_connection()
@@ -25,6 +28,8 @@ def index_by_id(document_id: int):
              raise RuntimeError(f"Vectors indexing failed, document_id : {document_id}")
         update_document_status(conn, document_id, "indexed")
         conn.commit()
+        logger.info(f"indexed document {document_id}")
+
     except Exception:       
             update_document_status(conn, document_id, "index_failed")
             conn.commit()

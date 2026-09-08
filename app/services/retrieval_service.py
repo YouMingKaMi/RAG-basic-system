@@ -1,6 +1,9 @@
 from app.services.embedding_service import ollama_embedding_process
 from app.services.chroma_service import search_vector
 from app.repositories.document_repository import get_chunk_content
+import logging
+
+logger = logging.getLogger(__name__)
 
 def retrieve(question:str, top_k:int =3, collection_name: str ="personal_documents"):
     question_embedding = ollama_embedding_process(question)
@@ -18,6 +21,8 @@ def retrieve(question:str, top_k:int =3, collection_name: str ="personal_documen
                              "document_id":metadata["document_id"],
                              "chunk_id":metadata["chunk_id"],
                              "distance":distance})
+    logger.info(f"Retrieve:question={question!r}, hits={len(content_list)}")
+        
     return content_list
 
     

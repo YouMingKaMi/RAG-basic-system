@@ -1,10 +1,13 @@
-from fastapi import UploadFile # type: ignore
+from fastapi import UploadFile
 from pathlib import Path
 import uuid
 from app.repositories.document_repository import create_document, search_all_document, search_one_document, create_chunks, delete_chunks, update_document_status, search_chunks_by_keyword, get_chunks_by_document, get_connection
 from app.parser.text_parser import text_parser
 from app.chunkers.text_chunker import chunk_text
 from app.exceptions import DocumentNotFoundError, InvalidUploadError, UploadProcessError, ChunkProcessError
+import logging
+
+logger = logging.getLogger(__name__)
 
 ALLOWED_EXTENSIONS = [".txt", ".md"]
 
@@ -63,6 +66,7 @@ async def upload_file(file: UploadFile) -> int:
         status = "uploaded"
 
         document_id = create_document(filename, stored_filename, stored_path, file_size, status)
+        logger.info(f"Upload process success: document_id={document_id}")
 
         return document_id
      except Exception:
@@ -98,7 +102,7 @@ def parse_and_chunk(document_id: int):
         create_chunks(conn, document_id, chunks)
         update_document_status(conn, document_id, "chunked")
         conn.commit()
-        print(f"totoal chunks: {len(chunks)}") 
+        logger.info(f"Chunked document {document_id},totoal chunks: {len(chunks)}") 
     except Exception: 
          conn.rollback()
          update_document_status(conn, document_id, "failed")

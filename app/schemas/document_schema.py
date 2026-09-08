@@ -17,7 +17,7 @@ class ChunkContent(BaseModel):
     content: str
     created_at: str
 
-class DocuemntChunksResponse(BaseModel):
+class DocumentChunksResponse(BaseModel):
     document_id: int
     chunks: list[ChunkContent]
     count: int
