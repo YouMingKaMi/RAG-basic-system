@@ -23,7 +23,7 @@
 
 ## 系统框架
 上传流水线
-```Mermaid
+```mermaid
 flowchart LR
     A[用户上传文件] --> B[检验：后缀、大小、空文件]
     B --> C[保存文件+写入SQLite:documents表]
@@ -33,11 +33,11 @@ flowchart LR
     F --> G[(embeddings写入ChromaDB向量库)]
 ```
 问答链路
-```Mermaid
+```mermaid
 flowchart LR
     A[用户提问问题] --> B[问题向量化]
     B --> C[(检索chromaDB向量库)]
-    A --> |提取历史聊天记录|I[(SQL:Session表)]
+    A --> |提取历史聊天记录|I[(SQL:message表)]
     C --> D{距离 < 阈值？}
     D --> |有合格|E[按metadata指针回SQL取原文]
     D --> |无合格|F[拒绝回答]
