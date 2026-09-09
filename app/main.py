@@ -3,7 +3,7 @@ from app.api.documents import router as documents_router
 from app.api.search import router as search_router
 from app.api.rating import router as rating_router
 from app.api.exception_handlers import register_exception_handlers
-from app.logging_cofig import setup_logging
+from app.logging_config import setup_logging
 
 app = FastAPI()
 
