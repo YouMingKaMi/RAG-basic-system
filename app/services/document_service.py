@@ -102,7 +102,7 @@ def parse_and_chunk(document_id: int):
         create_chunks(conn, document_id, chunks)
         update_document_status(conn, document_id, "chunked")
         conn.commit()
-        logger.info(f"Chunked document {document_id},totoal chunks: {len(chunks)}") 
+        logger.info(f"Chunked document {document_id},total chunks: {len(chunks)}") 
     except Exception: 
          conn.rollback()
          update_document_status(conn, document_id, "failed")
