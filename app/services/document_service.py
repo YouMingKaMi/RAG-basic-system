@@ -6,6 +6,7 @@ from app.parser.text_parser import text_parser
 from app.chunkers.text_chunker import chunk_text
 from app.exceptions import DocumentNotFoundError, InvalidUploadError, UploadProcessError, ChunkProcessError
 import logging
+from app.config import UPLOAD_PATH
 
 logger = logging.getLogger(__name__)
 
@@ -56,7 +57,7 @@ async def upload_file(file: UploadFile) -> int:
      unique_id = uuid.uuid4().hex
      stored_filename = unique_id + ext
 
-     upload_dir = Path("storage/uploads")/stored_filename
+     upload_dir = Path(UPLOAD_PATH/stored_filename)
 
      try:
         upload_dir.write_bytes(content_bytes)

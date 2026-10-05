@@ -1,9 +1,10 @@
-from fastapi import APIRouter, UploadFile, File
+from fastapi import APIRouter, UploadFile, File, Depends
 from app.services.document_service import upload_file, list_documents_service, get_doc_service, parse_and_chunk
 from app.services.indexing_service import index_by_id
 from app.schemas.document_schema import DocumentResponse, DocumentListResponse
+from app.api.deps import require_api_key
 
-router = APIRouter(prefix="/documents", tags=["documents"])
+router = APIRouter(prefix="/documents", tags=["documents"], dependencies=[Depends(require_api_key),])
 
 @router.get("/",response_model=DocumentListResponse)
 def list_documents():
@@ -20,3 +21,5 @@ async def upload_document(file: UploadFile = File(...)):
 @router.get("/get_docs/{document_id}", response_model=DocumentResponse)
 def get_doc(document_id: int):
     return get_doc_service(document_id)
+
+

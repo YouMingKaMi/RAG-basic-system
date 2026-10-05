@@ -1,6 +1,7 @@
 import sqlite3
+from app.config import DB_PATH
 
-conn = sqlite3.connect("storage/documents.db")
+conn = sqlite3.connect(DB_PATH)
 cur = conn.cursor()
 
 cur.execute("""

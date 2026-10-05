@@ -1,12 +1,13 @@
 import chromadb
+from app.config import CHROMA_PATH, COLLECTION_NAME
 
-def upsert_document_vectors(document_id:int, ids:list, embeddings:list, metadatas:list, collection_name: str ="personal_documents")-> bool:
+def upsert_document_vectors(document_id:int, ids:list, embeddings:list, metadatas:list, collection_name: str = COLLECTION_NAME)-> bool:
     try:
         client = chromadb.PersistentClient(
-            path = "storage/chroma_experiment"
+            path = CHROMA_PATH
         )
         collection = client.get_or_create_collection(
-            name=collection_name
+            name = collection_name
         )
         collection.delete(
             where={
@@ -28,9 +29,9 @@ def upsert_document_vectors(document_id:int, ids:list, embeddings:list, metadata
             )
         return False
 
-def search_vector(question_embedding: list[float], collection_name: str = "personal_documents", top_k: int = 3):
+def search_vector(question_embedding: list[float], collection_name: str = COLLECTION_NAME, top_k: int = 3):
     client = chromadb.PersistentClient(
-        path="storage/chroma_experiment"
+        path = CHROMA_PATH
     )
     collection = client.get_collection(
         name=collection_name
@@ -44,7 +45,7 @@ def search_vector(question_embedding: list[float], collection_name: str = "perso
 
 def delete(document_id: int, collection_name: str):
     client = chromadb.PersistentClient(
-        path = "storage/chroma_experiment"
+        path = CHROMA_PATH
     )
     collection = client.get_or_create_collection(
         name=collection_name

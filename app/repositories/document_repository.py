@@ -1,8 +1,8 @@
 import sqlite3
 from datetime import datetime
+from app.config import DB_PATH
 
-
-db_loc = "storage/documents.db"
+db_loc = DB_PATH
 
 def get_connection():
     conn = sqlite3.connect(db_loc)
@@ -174,8 +174,6 @@ def update_rating(message_id: int, rating: int, rating_content: str):
         conn.execute("UPDATE feedback SET rating = ?, rating_content = ? WHERE message_id = ?",(rating, rating_content, message_id))
 
 if __name__ == "__main__":
-    conn = sqlite3.connect(db_loc)
-    delete_documents(conn, 2)
-    conn.commit()
-    conn.close()
+    print(db_loc)
+
 

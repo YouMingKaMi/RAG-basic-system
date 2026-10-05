@@ -1,12 +1,13 @@
-from app.services.embedding_service import ollama_embedding_process
+from app.services.embedding_service import embedding_process
 from app.services.chroma_service import search_vector
 from app.repositories.document_repository import get_chunk_content
 import logging
+from app.config import COLLECTION_NAME
 
 logger = logging.getLogger(__name__)
 
-def retrieve(question:str, top_k:int =3, collection_name: str ="personal_documents"):
-    question_embedding = ollama_embedding_process(question)
+def retrieve(question:str, top_k:int =3, collection_name: str = COLLECTION_NAME):
+    question_embedding = embedding_process(question)
     vector_double_list = search_vector(question_embedding, collection_name, top_k)
 
     [vector_list] = vector_double_list["metadatas"]

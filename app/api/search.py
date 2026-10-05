@@ -1,11 +1,12 @@
-from fastapi import APIRouter 
+from fastapi import APIRouter, Depends
 from app.services.document_service import keyword_search, get_document_chunks
 from app.services.rag_service import rag_service, rag_session_service
 from app.schemas.rag_schema import RagRequest, RagResponse, RagSessionRequest, RagSessionResponse
 from app.schemas.document_schema import DocumentChunksResponse, KeywordSearchResponse
+from app.api.deps import require_api_key
 
 
-router = APIRouter(prefix="/search", tags=["search"])
+router = APIRouter(prefix="/search", tags=["search"], dependencies=[Depends(require_api_key)])
 
 @router.get("/keywords/{keyword}", response_model=KeywordSearchResponse)
 def keyword_find(keyword: str):

@@ -1,5 +1,5 @@
 from app.repositories.document_repository import get_chunks_by_document, update_document_status, get_connection
-from app.services.embedding_service import ollama_embedding_process
+from app.services.embedding_service import embedding_process
 from app.services.chroma_service import upsert_document_vectors
 from app.exceptions import IndexProcessError
 import logging 
@@ -14,7 +14,7 @@ def index_by_id(document_id: int):
             raise ValueError("No chunk has been found in this document")
         update_document_status(conn, document_id, "indexing")
         conn.commit()
-        embeddings = [ollama_embedding_process(chunk["content"]) for chunk in chunks]
+        embeddings = [embedding_process(chunk["content"]) for chunk in chunks]
         chunk_ids = [chunk["chunk_id"] for chunk in chunks]
         full_ids = []
         metadatas = []
@@ -39,8 +39,6 @@ def index_by_id(document_id: int):
     finally:
          conn.close()
 
-if __name__ == "__main__":
-    index_by_id(20)
       
 
 

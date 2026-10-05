@@ -18,3 +18,7 @@ setup_logging()
 @app.get("/")
 def read_root():
     return {"message": "RAG Knowledge Base API is running"}
+
+@app.get("/health")
+def check_health():
+    return {"status": "ok"}
